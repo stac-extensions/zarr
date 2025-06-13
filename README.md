@@ -1,14 +1,19 @@
-# Template Extension Specification
+# Zarr Extension Specification
 
-- **Title:** Template
-- **Identifier:** <https://stac-extensions.github.io/template/v1.0.0/schema.json>
-- **Field Name Prefix:** template
-- **Scope:** Item, Collection
+- **Title:** Zarr Extension Specification
+- **Identifier:** <https://jsignell.github.io/zarr/v1.0.0/schema.json>
+- **Field Name Prefix:** zarr
+- **Scope:** Asset
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
-- **Owner**: @your-gh-handles @person2
+- **Owner**: @jsignell
 
-This document explains the Template Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
-This is the place to add a short introduction.
+This document explains the Zarr Extension to the [SpatioTemporal Asset Catalog](https://github.com/radiantearth/stac-spec) (STAC) specification.
+
+This extension helps users open STAC Assets pointing to Zarr stores. It includes fields from Zarr metadata that are
+relevant when opening a Zarr store. The goal of this extension is not to reproduce all Zarr metadata within STAC.
+
+This extension takes inspiration from the deprecated [Xarray Assets Extension](https://github.com/stac-extensions/xarray-assets)
+by @TomAugspurger and can be used as a replacement when paired with the Storage Extension and `xpystac` (see Python Example below).
 
 - Examples:
   - [Item example](examples/item.json): Shows the basic usage of the extension in a STAC Item
@@ -21,41 +26,74 @@ This is the place to add a short introduction.
 The fields in the table below can be used in these parts of STAC documents:
 
 - [ ] Catalogs
-- [x] Collections
-- [x] Item Properties (incl. Summaries in Collections)
+- [ ] Collections
+- [ ] Item Properties (incl. Summaries in Collections)
 - [x] Assets (for both Collections and Items, incl. Item Asset Definitions in Collections)
 - [ ] Links
 
 | Field Name           | Type                      | Description                                  |
 | -------------------- | ------------------------- | -------------------------------------------- |
-| template:new_field   | string                    | **REQUIRED**. Describe the required field... |
-| template:xyz         | [XYZ Object](#xyz-object) | Describe the field...                        |
-| template:another_one | \[number]                 | Describe the field...                        |
+| zarr:consolidated    | boolean                   | Whether the Zarr store includes consolidated metadata |
+| zarr:node_type       | string                    | Type of Zarr hierarchy node element. Must be `group` or `array` |
+| zarr:zarr_format     | integer                   | Zarr format of the store (currently 2 or 3)  |
 
 ### Additional Field Information
 
-#### template:new_field
+#### zarr:consolidated
 
-This is a much more detailed description of the field `template:new_field`...
+[Consolidated metadata](https://zarr.readthedocs.io/en/main/user-guide/consolidated_metadata.html)
+stores all the metadata for a Zarr hierarchy in the metadata of the root Group. This boolean 
+`consolidated` fields is useful when opening a Zarr store in xarray: 
+`xarray.open_dataset(... consolidated=True)`.
 
-### XYZ Object
+A value of `true` indicates that:
 
-This is the introduction for the purpose and the content of the XYZ Object...
+For Zarr 2: there is a top-level .zmetadata document.
+For Zarr 3: within the top-level Zarr metadata there is a `consolidated_metadata` field.
 
-| Field Name | Type   | Description                                  |
-| ---------- | ------ | -------------------------------------------- |
-| x          | number | **REQUIRED**. Describe the required field... |
-| y          | number | **REQUIRED**. Describe the required field... |
-| z          | number | **REQUIRED**. Describe the required field... |
+Note: Consolidated metadata is not officially part of the Zarr specification
+([PR to add it](https://github.com/zarr-developers/zarr-specs/pull/309)),
+but it is useful to know whether or not it is present when opening a Zarr store.
 
-## Relation types
+#### zarr:node_type
 
-The following types should be used as applicable `rel` types in the
-[Link Object](https://github.com/radiantearth/stac-spec/tree/master/item-spec/item-spec.md#link-object).
+As defined in the [Zarr v3 Specification](https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html)
 
-| Type           | Description                           |
-| -------------- | ------------------------------------- |
-| fancy-rel-type | This link points to a fancy resource. |
+> A string defining the type of hierarchy node element
+
+`node_type` indicates which data model to use when opening the Zarr store. For `group` a tree structure is recommended 
+(such as `xarray.DataTree`). For array an array structure (such as `xarray.DataArray`). Note that xarray does not
+currently support reading Zarr Arrays directly into `xarray.DataArray` objects, but other libraries 
+such as GDAL, zarrs, and zarr-python do.
+
+#### zarr:zarr_format
+
+As defined in the [Zarr v3 Specification](https://zarr-specs.readthedocs.io/en/latest/v3/core/index.html):
+
+> An integer defining the version of the storage specification to which the array store adheres.
+
+`zarr_format` has implications with respect to the versions of libraries required to open the Zarr store.
+
+## Python Example
+
+This extension will be used by [xpystac](https://github.com/stac-utils/xpystac) to enable the following:
+
+```python
+import planetary_computer
+import pystac_client
+import xarray as xr
+
+
+catalog = pystac_client.Client.open(
+    "https://planetarycomputer.microsoft.com/api/stac/v1",
+    modifier=planetary_computer.sign_inplace,
+)
+
+collection = catalog.get_collection("daymet-daily-hi")
+asset = collection.assets["zarr-abfs"]
+
+xr.open_dataset(asset, patch_url=planetary_computer.sign)
+```
 
 ## Contributing
 
