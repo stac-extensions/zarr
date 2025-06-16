@@ -1,7 +1,7 @@
 {
   "stac_version": "1.0.0",
   "stac_extensions": [
-    "https://stac-extensions.github.io/template/v1.0.0/schema.json"
+    "https://jsignell.github.io/zarr/v1.0.0/schema.json"
   ],
   "type": "Feature",
   "id": "item",
@@ -50,6 +50,7 @@
   "assets": {
     "data": {
       "href": "abfs://example.com/examples/file.zarr",
+      "type": "application/vnd.zarr",
       "zarr:consolidated": true,
       "zarr:node_type": "group",
       "zarr:zarr_format": 3

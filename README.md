@@ -33,9 +33,9 @@ The fields in the table below can be used in these parts of STAC documents:
 
 | Field Name           | Type                      | Description                                  |
 | -------------------- | ------------------------- | -------------------------------------------- |
-| zarr:consolidated    | boolean                   | Whether the Zarr store includes consolidated metadata |
-| zarr:node_type       | string                    | Type of Zarr hierarchy node element. Must be `group` or `array` |
-| zarr:zarr_format     | integer                   | Zarr format of the store (currently 2 or 3)  |
+| zarr:consolidated | boolean | Whether the Zarr store includes consolidated metadata |
+| zarr:node_type | string | Type of Zarr hierarchy node element. Must be `group` or `array` |
+| zarr:zarr_format | integer | Zarr format of the store (currently 2 or 3)  |
 
 ### Additional Field Information
 

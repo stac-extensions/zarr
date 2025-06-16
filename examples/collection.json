@@ -1,8 +1,7 @@
 {
   "stac_version": "1.0.0",
   "stac_extensions": [
-    "https://stac-extensions.github.io/item-assets/v1.0.0/schema.json",
-    "https://stac-extensions.github.io/template/v1.0.0/schema.json"
+    "https://jsignell.github.io/zarr/v1.0.0/schema.json"
   ],
   "type": "Collection",
   "id": "collection",
@@ -29,13 +28,11 @@
       ]
     }
   },
- "assets": {
+  "assets": {
     "example": {
       "href": "abfs://cpdata/raw/terraclimate/4000m/raster.zarr",
       "type": "application/vnd.zarr",
-      "zarr:consolidated": true,
-      "zarr:node_type": "group",
-      "zarr:zarr_format": 3
+      "zarr:consolidated": true
     }
   },
   "summaries": {
