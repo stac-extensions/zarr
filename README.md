@@ -1,7 +1,7 @@
 # Zarr Extension Specification
 
 - **Title:** Zarr Extension Specification
-- **Identifier:** <https://stac-extensions.github.io/zarr/v1.0.0/schema.json>
+- **Identifier:** <https://stac-extensions.github.io/zarr/v1.1.0/schema.json>
 - **Field Name Prefix:** zarr
 - **Scope:** Asset
 - **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/master/extensions/README.md#extension-maturity):** Proposal
