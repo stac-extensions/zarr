@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stac-extensions.github.io/zarr/v1.0.0/schema.json#",
+  "$id": "https://raw.githubusercontent.com/stac-extensions/zarr/refs/heads/release-1.1.0/json-schema/schema.json#",
   "title": "Zarr Extension",
   "description": "STAC Zarr Extension for STAC Assets.",
   "oneOf": [
