@@ -58,16 +58,8 @@
           "properties": {
             "assets": {
               "type": "object",
-              "not": {
-                "additionalProperties": {
-                  "not": {
-                    "allOf": [
-                      {
-                        "$ref": "#/definitions/fields"
-                      }
-                    ]
-                  }
-                }
+              "additionalProperties": {
+                "$ref": "#/definitions/fields"
               }
             }
           }
