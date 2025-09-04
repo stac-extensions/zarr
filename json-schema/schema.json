@@ -63,9 +63,6 @@
                   "not": {
                     "allOf": [
                       {
-                        "$ref": "#/definitions/require_any_field"
-                      },
-                      {
                         "$ref": "#/definitions/fields"
                       }
                     ]
