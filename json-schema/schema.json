@@ -50,7 +50,7 @@
         }
       ],
       "anyOf": [
-         {
+        {
           "$comment": "This validates the fields in Collection Assets, but does not require them.",
           "required": [
             "assets"
@@ -58,8 +58,12 @@
           "properties": {
             "assets": {
               "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/fields"
+              "not": {
+                "additionalProperties": {
+                  "not": {
+                    "$ref": "#/definitions/fields"
+                  }
+                }
               }
             }
           }
