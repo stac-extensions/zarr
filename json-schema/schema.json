@@ -59,7 +59,7 @@
             "assets": {
               "type": "object",
               "additionalProperties": {
-                "$ref": "#/definitions/require_any_field"
+                "$ref": "#/definitions/fields"
               }
             }
           }
@@ -81,13 +81,6 @@
           }
         }
       }
-    },
-    "require_any_field": {
-      "anyOf": [
-        {"required": ["zarr:consolidated"]},
-        {"required": ["zarr:node_type"]},
-        {"required": ["zarr:zarr_format"]}
-      ]
     },
     "fields": {
       "type": "object",
