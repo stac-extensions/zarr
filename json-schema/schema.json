@@ -50,7 +50,7 @@
         }
       ],
       "anyOf": [
-        {
+         {
           "$comment": "This validates the fields in Collection Assets, but does not require them.",
           "required": [
             "assets"
@@ -58,8 +58,19 @@
           "properties": {
             "assets": {
               "type": "object",
-              "additionalProperties": {
-                "$ref": "#/definitions/fields"
+              "not": {
+                "additionalProperties": {
+                  "not": {
+                    "allOf": [
+                      {
+                        "$ref": "#/definitions/require_any_field"
+                      },
+                      {
+                        "$ref": "#/definitions/fields"
+                      }
+                    ]
+                  }
+                }
               }
             }
           }
@@ -77,10 +88,17 @@
         "stac_extensions": {
           "type": "array",
           "contains": {
-            "const": "https://stac-extensions.github.io/zarr/v1.0.0/schema.json"
+            "const": "https://raw.githubusercontent.com/stac-extensions/zarr/refs/heads/release-1.1.0/json-schema/schema.json"
           }
         }
       }
+    },
+    "require_any_field": {
+      "anyOf": [
+        {"required": ["zarr:consolidated"]},
+        {"required": ["zarr:node_type"]},
+        {"required": ["zarr:zarr_format"]}
+      ]
     },
     "fields": {
       "type": "object",
